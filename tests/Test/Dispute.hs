@@ -22,7 +22,7 @@ disputeTests config = do
       result <- stripe config $ do
         Customer { customerId = cid } <- createCustomerByCard cn em ey cvc
         Charge   { chargeId = chid } <- chargeCustomer cid USD 100 Nothing
-        liftIO $ threadDelay (secs 20) -- Sleep to allow the thread to dispute to happen
+--        liftIO $ threadDelay (secs 20) -- Sleep to allow the thread to dispute to happen
         Charge { chargeDispute = cd } <- getCharge chid
         void $ deleteCustomer cid
         return cd
@@ -33,9 +33,9 @@ disputeTests config = do
       result <- stripe config $ do
         Customer { customerId = cid } <- createCustomerByCard cn em ey cvc
         Charge   { chargeId = chid  } <- chargeCustomer cid USD 100 Nothing
-        liftIO $ threadDelay (secs 10)
+--        liftIO $ threadDelay (secs 10)
         void $ updateDispute chid evi meta
-        liftIO $ threadDelay (secs 10)
+--        liftIO $ threadDelay (secs 10)
         Charge { chargeDispute = Just dispute } <- getCharge chid
         void $ deleteCustomer cid
         return dispute
@@ -48,9 +48,9 @@ disputeTests config = do
       result <- stripe config $ do
         Customer { customerId = cid } <- createCustomerByCard cn em ey cvc
         Charge   { chargeId = chid  } <- chargeCustomer cid USD 100 Nothing
-        liftIO $ threadDelay (secs 10)
+  --      liftIO $ threadDelay (secs 10)
         void $ updateDispute chid win meta
-        liftIO $ threadDelay (secs 10)
+--        liftIO $ threadDelay (secs 10)
         Charge { chargeDispute = Just dispute } <- getCharge chid
         void $ deleteCustomer cid
         return dispute
@@ -63,9 +63,9 @@ disputeTests config = do
       result <- stripe config $ do
         Customer { customerId = cid } <- createCustomerByCard cn em ey cvc
         Charge   { chargeId = chid  } <- chargeCustomer cid USD 100 Nothing
-        liftIO $ threadDelay (secs 10) -- Sleep to allow the thread to dispute to happen
+  --      liftIO $ threadDelay (secs 10) -- Sleep to allow the thread to dispute to happen
         void $ updateDispute chid lose meta
-        liftIO $ threadDelay (secs 10)
+    --    liftIO $ threadDelay (secs 10)
         Charge { chargeDispute = Just dispute } <- getCharge chid
         void $ deleteCustomer cid
         return dispute
@@ -78,7 +78,7 @@ disputeTests config = do
       result <- stripe config $ do
         Customer { customerId = cid } <- createCustomerByCard cn em ey cvc
         Charge   { chargeId = chid  } <- chargeCustomer cid USD 100 Nothing
-        liftIO $ threadDelay (secs 10) -- Sleep to allow the thread to dispute to happen
+--        liftIO $ threadDelay (secs 10) -- Sleep to allow the thread to dispute to happen
         dispute <- closeDispute chid
         void $ deleteCustomer cid
         return dispute
